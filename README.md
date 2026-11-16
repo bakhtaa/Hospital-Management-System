@@ -1,4 +1,323 @@
-#  ZeeCare Medical Institute - Hospital Management System
+# Hospital Management System
+
+## 1. Présentation du projet
+
+Hospital Management System est une application web de gestion hospitalière permettant de centraliser les patients, les médecins, les rendez-vous et les messages envoyés à l’établissement.
+
+L’application est composée de trois parties principales :
+
+- un backend REST développé avec Node.js et Express ;
+- une interface publique destinée aux visiteurs et aux patients ;
+- un tableau de bord destiné aux administrateurs.
+
+L’objectif est de faciliter la prise de rendez-vous, la gestion des médecins et le suivi administratif des demandes.
+
+---
+
+## 2. Problématique
+
+La gestion manuelle d’un hôpital peut entraîner plusieurs difficultés :
+
+- perte des demandes de rendez-vous ;
+- manque de visibilité sur les médecins disponibles ;
+- communication lente avec les patients ;
+- difficulté à suivre le statut des rendez-vous ;
+- absence de centralisation des informations ;
+- accès non sécurisé aux données administratives ;
+- manque d’outils pour gérer les médecins et les messages.
+
+Cette application apporte une solution numérique permettant de centraliser les principales opérations administratives et médicales.
+
+---
+
+## 3. Objectifs
+
+Les objectifs de l’application sont les suivants :
+
+- permettre aux visiteurs de consulter les informations de l’hôpital ;
+- permettre aux patients de créer un compte ;
+- sécuriser la connexion des patients et des administrateurs ;
+- permettre aux patients de demander un rendez-vous ;
+- permettre aux administrateurs de gérer les rendez-vous ;
+- permettre l’ajout de médecins et d’administrateurs ;
+- permettre la consultation des messages reçus ;
+- stocker les données dans une base MongoDB ;
+- stocker les avatars des médecins avec Cloudinary.
+
+---
+
+## 4. Acteurs de l’application
+
+### 4.1 Visiteur
+
+Le visiteur est un utilisateur non authentifié.
+
+Il peut :
+
+- consulter la page d’accueil ;
+- consulter la présentation de l’hôpital ;
+- consulter les départements ;
+- consulter les services ;
+- consulter la liste des médecins ;
+- envoyer un message à l’administration ;
+- accéder aux pages d’inscription et de connexion.
+
+Il ne peut pas :
+
+- créer un rendez-vous ;
+- accéder au dashboard ;
+- consulter les données administratives.
+
+### 4.2 Patient
+
+Le patient est un utilisateur inscrit et authentifié.
+
+Il peut :
+
+- créer un compte ;
+- se connecter ;
+- consulter les médecins ;
+- choisir un département ;
+- choisir un médecin ;
+- demander un rendez-vous ;
+- indiquer s’il a déjà visité l’hôpital ;
+- se déconnecter.
+
+Le patient possède le rôle :
+
+```text
+Patient
+
+##4.3 Administrateur
+L’administrateur gère les opérations principales de l’application.
+
+Il peut :
+
+se connecter au dashboard ;
+consulter tous les rendez-vous ;
+accepter ou rejeter un rendez-vous ;
+supprimer un rendez-vous ;
+consulter la liste des médecins ;
+ajouter un nouveau médecin ;
+ajouter un nouvel administrateur ;
+consulter les messages ;
+se déconnecter.
+L’administrateur possède le rôle :
+#6. Workflow complet
+#6.1 Workflow d’un visiteur
+
+Le visiteur ouvre le site
+        |
+        v
+Il consulte l'accueil, les services et les départements
+        |
+        v
+Il peut consulter les médecins
+        |
+        v
+Il peut envoyer un message
+        |
+        v
+Le message est envoyé à l'API
+        |
+        v
+L'API valide les informations
+        |
+        v
+Le message est enregistré dans MongoDB
+        |
+        v
+L'administrateur peut le consulter depuis le dashboard
+#6.2 Workflow d’inscription d’un patient
+Le patient ouvre la page d'inscription
+        |
+        v
+Il renseigne ses informations personnelles
+        |
+        v
+Le frontend envoie une requête POST
+        |
+        v
+Le backend vérifie les champs obligatoires
+        |
+        v
+Le backend vérifie si l'e-mail existe déjà
+        |
+        v
+Le mot de passe est hashé avec bcryptjs
+        |
+        v
+Le patient est créé dans MongoDB
+        |
+        v
+Un token JWT est généré
+        |
+        v
+Le token est placé dans le cookie patientToken
+        |
+        v
+Le patient est authentifié
+#6.3 Workflow de connexion
+L'utilisateur saisit son e-mail et son mot de passe
+        |
+        v
+Le frontend envoie une requête au backend
+        |
+        v
+Le backend recherche l'utilisateur
+        |
+        v
+Le mot de passe saisi est comparé au mot de passe hashé
+        |
+        v
+Le rôle demandé est vérifié
+        |
+        v
+Un token JWT est généré
+        |
+        v
+Le token est stocké dans un cookie HTTP
+        |
+        v
+L'utilisateur accède à son espace
+
+#Le rôle transmis lors de la connexion permet de différencier :
+Patient
+Admin
+#6.4 Workflow de demande de rendez-vous
+Le patient se connecte
+        |
+        v
+Il ouvre la page de rendez-vous
+        |
+        v
+La liste des médecins est récupérée depuis l'API
+        |
+        v
+Le patient choisit un département
+        |
+        v
+Le patient choisit un médecin
+        |
+        v
+Il renseigne ses informations
+        |
+        v
+Il choisit une date
+        |
+        v
+Le frontend envoie la demande
+        |
+        v
+Le middleware vérifie le cookie patientToken
+        |
+        v
+Le backend vérifie que le rôle est Patient
+        |
+        v
+Le médecin est recherché dans MongoDB
+        |
+        v
+Le rendez-vous est créé avec le statut Pending
+        |
+        v
+La demande apparaît dans le dashboard administrateur
+
+#6.5 Workflow de traitement d’un rendez-vous
+L'administrateur se connecte au dashboard
+        |
+        v
+Le middleware vérifie le cookie adminToken
+        |
+        v
+Le backend vérifie que l'utilisateur est Admin
+        |
+        v
+Les rendez-vous sont récupérés
+        |
+        v
+L'administrateur consulte les demandes
+        |
+        v
+Il choisit un nouveau statut
+        |
+        +--> Accepted
+        |
+        +--> Rejected
+        |
+        v
+Le backend met à jour le rendez-vous dans MongoDB
+#7. Architecture de l’application
++----------------------------+
+| Frontend public            |
+| React + Vite               |
+| Interface patient          |
++-------------+--------------+
+              |
+              | HTTP / JSON / Axios
+              |
++-------------v--------------+
+| Backend                    |
+| Node.js + Express          |
+| API REST                   |
+| Authentification JWT       |
++-------------+--------------+
+              |
+       +------+------+
+       |             |
+       v             v
++-------------+  +-------------+
+| MongoDB     |  | Cloudinary  |
+| Données     |  | Avatars     |
++-------------+  +-------------+
+
++----------------------------+
+| Dashboard administrateur   |
+| React + Vite               |
++-------------+--------------+
+              |
+              | HTTP / JSON / Axios
+              |
+              +----> Backend API
+
+7.1 Type d’architecture
+Le projet utilise :
+
+une architecture client-serveur ;
+une architecture frontend/backend séparée ;
+une API REST ;
+une application SPA avec React ;
+une architecture modulaire côté backend ;
+une base de données MongoDB ;
+une authentification basée sur JWT.
+#7.2 Rendu côté client et côté serveur
+Le frontend utilise principalement le rendu côté client :
+
+Client-Side Rendering
+React est exécuté dans le navigateur. Les pages sont affichées et mises à jour côté client.
+
+Le backend est exécuté côté serveur :
+
+Server-Side API
+Le serveur Express s’occupe de :
+
+recevoir les requêtes HTTP ;
+appliquer la logique métier ;
+vérifier l’authentification ;
+valider les données ;
+communiquer avec MongoDB ;
+communiquer avec Cloudinary ;
+retourner des réponses JSON.
+L’application complète peut donc être résumée ainsi :
+Frontend React : rendu côté client
+Backend Express : traitement côté serveur
+Communication : API REST
+Authentification : JWT dans des cookies HTTP
+Base de données : MongoDB
+Stockage des images : Cloudinary
+
+#English Version
+# ZeeCare Medical Institute - Hospital Management System
 
 A comprehensive Hospital Management System built with the MERN stack, providing separate interfaces for patients and administrators to manage appointments, doctors, and medical services efficiently.
 
@@ -7,7 +326,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://mongodb.com/)
 [![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)](https://expressjs.com/)
 
-##  Table of Contents
+## 📋 Table of Contents
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -24,21 +343,21 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - [License](#-license)
 - [Contact](#-contact)
 
-##  Features
+## ✨ Features
 
-###  Authentication & Authorization
+### 🔐 Authentication & Authorization
 - **Multi-role Authentication**: Separate login systems for Patients, Doctors, and Admins
 - **JWT Token-based Security**: Secure authentication with HTTP-only cookies
 - **Role-based Access Control**: Different permissions for different user types
 
-###  Admin Dashboard Features
+### 👨‍⚕️ Admin Dashboard Features
 - **Doctor Management**: Add, view, and manage doctor profiles with avatar uploads
 - **Admin Management**: Create new admin accounts
 - **Appointment Management**: View, accept, reject, and track all appointments
 - **Message Center**: View and manage patient inquiries
 - **Real-time Statistics**: Dashboard with appointment and doctor counts
 
-### Patient Portal Features
+### 👤 Patient Portal Features
 - **User Registration & Login**: Secure patient account creation
 - **Appointment Booking**: Schedule appointments with preferred doctors
 - **Department Selection**: Choose from 9 medical departments
@@ -46,7 +365,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - **Medical History**: Track previous visits and appointments
 - **Contact Form**: Send messages to hospital administration
 
-###  Medical Departments
+### 🏥 Medical Departments
 - Pediatrics
 - Orthopedics  
 - Cardiology
@@ -57,7 +376,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - Dermatology
 - ENT (Ear, Nose, Throat)
 
-##  Tech Stack
+## 🚀 Tech Stack
 
 ### Backend
 - **Node.js** - JavaScript runtime environment
@@ -84,7 +403,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - **ESLint** - Code linting
 - **dotenv** - Environment variable management
 
-## Project Structure
+##  Project Structure
 
 ```
 hospital-management-system/
@@ -149,7 +468,7 @@ hospital-management-system/
 └── README.md
 ```
 
-##  Prerequisites
+## 📋 Prerequisites
 
 Before running this project, make sure you have the following installed:
 
@@ -158,7 +477,7 @@ Before running this project, make sure you have the following installed:
 - **MongoDB** (local installation or MongoDB Atlas)
 - **Git**
 
-## Installation
+## 🛠 Installation
 
 ### 1. Clone the Repository
 
@@ -188,7 +507,7 @@ cd ../dashboard
 npm install
 ```
 
-##  Environment Variables
+## 🔧 Environment Variables
 
 Create a `.env` file in the `Backend/config/` directory:
 
@@ -216,7 +535,7 @@ CLOUDINARY_API_KEY=your-cloudinary-api-key
 CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 ```
 
-##  Database Schema
+## 🗄 Database Schema
 
 ### User Schema
 ```javascript
@@ -273,7 +592,7 @@ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 }
 ```
 
-##  API Endpoints
+## 🔗 API Endpoints
 
 ### User Routes (`/api/v1/user`)
 
@@ -305,7 +624,7 @@ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 | POST | `/send` | Send message | No |
 | GET | `/getall` | Get all messages | Admin |
 
-## Authentication & Authorization
+## 🔐 Authentication & Authorization
 
 ### JWT Token System
 - **Patient Token**: Stored in `patientToken` cookie
@@ -322,7 +641,7 @@ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 - Passwords hashed using bcrypt with salt rounds of 10
 - Password comparison using bcrypt.compare()
 
-##  Usage
+## 🚀 Usage
 
 ### 1. Start the Backend Server
 
@@ -354,9 +673,9 @@ npm run dev
 - **Admin Dashboard**: http://localhost:5174
 - **API Server**: http://localhost:4000
 
-##  User Roles & Access
+## 👥 User Roles & Access
 
-### Admin Features
+### 🏥 Admin Features
 1. **Login** to admin dashboard
 2. **View Dashboard** with statistics
 3. **Manage Appointments** (view, accept, reject, delete)
@@ -365,7 +684,7 @@ npm run dev
 6. **View All Doctors**
 7. **Read Patient Messages**
 
-###  Patient Features
+### 👤 Patient Features
 1. **Register** new account
 2. **Login** to patient portal
 3. **Book Appointments** with doctor selection
@@ -373,12 +692,12 @@ npm run dev
 5. **Send Messages** to administration
 6. **View Hospital Information**
 
-###  Doctor Features
+### 👨‍⚕️ Doctor Features
 - Doctors are added by admins
 - Profile management through admin dashboard
 - Department assignment and specialization
 
-##  Screenshots
+## 🖼 Screenshots
 
 *Add screenshots of your application here*
 
@@ -392,7 +711,7 @@ npm run dev
 ![Doctor Management](screenshots/doctor-management.png)
 ```
 
-##  Contributing
+## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
 
@@ -435,7 +754,7 @@ git push origin feature/your-feature-name
 - Include screenshots if UI changes
 - Reference any related issues
 
-##  Known Issues & Limitations
+## 🐛 Known Issues & Limitations
 
 1. **Message Schema Validation**: Message field has `exactLength: 10` which seems restrictive
 2. **NIC Validation**: Different lengths (12 vs 13 digits) in User vs Appointment schemas
@@ -443,7 +762,7 @@ git push origin feature/your-feature-name
 4. **Cloudinary Config**: Duplicate `cloud_name` property in server.js
 5. **Error Handling**: Some API calls lack comprehensive error handling
 
-##  Future Enhancements
+## 🔄 Future Enhancements
 
 - [ ] **Real-time Notifications** using Socket.io
 - [ ] **Email Integration** for appointment confirmations
@@ -456,7 +775,7 @@ git push origin feature/your-feature-name
 - [ ] **Multi-language Support**
 - [ ] **Dark Mode** theme
 
-##  Development Guidelines
+## 📝 Development Guidelines
 
 ### Code Style
 - Use ES6+ features
@@ -476,7 +795,7 @@ git push origin feature/your-feature-name
 - Test responsive design on multiple devices
 - Validate forms and error handling
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Common Issues
 
@@ -504,7 +823,7 @@ Error: Failed To Upload Doctor Avatar To Cloudinary
 ```
 **Solution**: Verify Cloudinary credentials in environment variables
 
-##  License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -532,7 +851,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-##  Contact
+## 📞 Contact
 
 For questions, suggestions, or support:
 
