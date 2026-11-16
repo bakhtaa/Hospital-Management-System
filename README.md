@@ -7,7 +7,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://mongodb.com/)
 [![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)](https://expressjs.com/)
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -24,21 +24,21 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - [License](#-license)
 - [Contact](#-contact)
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication & Authorization
+###  Authentication & Authorization
 - **Multi-role Authentication**: Separate login systems for Patients, Doctors, and Admins
 - **JWT Token-based Security**: Secure authentication with HTTP-only cookies
 - **Role-based Access Control**: Different permissions for different user types
 
-### 👨‍⚕️ Admin Dashboard Features
+###  Admin Dashboard Features
 - **Doctor Management**: Add, view, and manage doctor profiles with avatar uploads
 - **Admin Management**: Create new admin accounts
 - **Appointment Management**: View, accept, reject, and track all appointments
 - **Message Center**: View and manage patient inquiries
 - **Real-time Statistics**: Dashboard with appointment and doctor counts
 
-### 👤 Patient Portal Features
+###  Patient Portal Features
 - **User Registration & Login**: Secure patient account creation
 - **Appointment Booking**: Schedule appointments with preferred doctors
 - **Department Selection**: Choose from 9 medical departments
@@ -46,7 +46,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - **Medical History**: Track previous visits and appointments
 - **Contact Form**: Send messages to hospital administration
 
-### 🏥 Medical Departments
+### Medical Departments
 - Pediatrics
 - Orthopedics  
 - Cardiology
@@ -57,7 +57,7 @@ A comprehensive Hospital Management System built with the MERN stack, providing 
 - Dermatology
 - ENT (Ear, Nose, Throat)
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 ### Backend
 - **Node.js** - JavaScript runtime environment
@@ -149,7 +149,7 @@ hospital-management-system/
 └── README.md
 ```
 
-## 📋 Prerequisites
+##  Prerequisites
 
 Before running this project, make sure you have the following installed:
 
@@ -188,7 +188,7 @@ cd ../dashboard
 npm install
 ```
 
-## 🔧 Environment Variables
+##  Environment Variables
 
 Create a `.env` file in the `Backend/config/` directory:
 
@@ -273,7 +273,7 @@ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 }
 ```
 
-## 🔗 API Endpoints
+##  API Endpoints
 
 ### User Routes (`/api/v1/user`)
 
@@ -305,7 +305,7 @@ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 | POST | `/send` | Send message | No |
 | GET | `/getall` | Get all messages | Admin |
 
-## 🔐 Authentication & Authorization
+##  Authentication & Authorization
 
 ### JWT Token System
 - **Patient Token**: Stored in `patientToken` cookie
@@ -322,7 +322,7 @@ CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 - Passwords hashed using bcrypt with salt rounds of 10
 - Password comparison using bcrypt.compare()
 
-## 🚀 Usage
+##  Usage
 
 ### 1. Start the Backend Server
 
@@ -354,9 +354,9 @@ npm run dev
 - **Admin Dashboard**: http://localhost:5174
 - **API Server**: http://localhost:4000
 
-## 👥 User Roles & Access
+##  User Roles & Access
 
-### 🏥 Admin Features
+###  Admin Features
 1. **Login** to admin dashboard
 2. **View Dashboard** with statistics
 3. **Manage Appointments** (view, accept, reject, delete)
@@ -365,7 +365,7 @@ npm run dev
 6. **View All Doctors**
 7. **Read Patient Messages**
 
-### 👤 Patient Features
+###  Patient Features
 1. **Register** new account
 2. **Login** to patient portal
 3. **Book Appointments** with doctor selection
@@ -373,12 +373,12 @@ npm run dev
 5. **Send Messages** to administration
 6. **View Hospital Information**
 
-### 👨‍⚕️ Doctor Features
+###  Doctor Features
 - Doctors are added by admins
 - Profile management through admin dashboard
 - Department assignment and specialization
 
-## 🖼 Screenshots
+##  Screenshots
 
 *Add screenshots of your application here*
 
@@ -392,7 +392,7 @@ npm run dev
 ![Doctor Management](screenshots/doctor-management.png)
 ```
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Please follow these steps:
 
@@ -435,7 +435,7 @@ git push origin feature/your-feature-name
 - Include screenshots if UI changes
 - Reference any related issues
 
-## 🐛 Known Issues & Limitations
+## Known Issues & Limitations
 
 1. **Message Schema Validation**: Message field has `exactLength: 10` which seems restrictive
 2. **NIC Validation**: Different lengths (12 vs 13 digits) in User vs Appointment schemas
@@ -443,7 +443,7 @@ git push origin feature/your-feature-name
 4. **Cloudinary Config**: Duplicate `cloud_name` property in server.js
 5. **Error Handling**: Some API calls lack comprehensive error handling
 
-## 🔄 Future Enhancements
+##  Future Enhancements
 
 - [ ] **Real-time Notifications** using Socket.io
 - [ ] **Email Integration** for appointment confirmations
@@ -456,7 +456,7 @@ git push origin feature/your-feature-name
 - [ ] **Multi-language Support**
 - [ ] **Dark Mode** theme
 
-## 📝 Development Guidelines
+##  Development Guidelines
 
 ### Code Style
 - Use ES6+ features
@@ -476,7 +476,7 @@ git push origin feature/your-feature-name
 - Test responsive design on multiple devices
 - Validate forms and error handling
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 
@@ -504,7 +504,7 @@ Error: Failed To Upload Doctor Avatar To Cloudinary
 ```
 **Solution**: Verify Cloudinary credentials in environment variables
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -532,17 +532,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## 📞 Contact
-
-For questions, suggestions, or support:
-
-- **Email**: zeecare@hospital.com
-- **GitHub**: [@yourusername](https://github.com/yourusername)
-- **LinkedIn**: [Your LinkedIn](https://linkedin.com/in/yourprofile)
 
 ---
 
-⭐ **Star this repository if you found it helpful!**
+
 
 ##Author
 Bakhta Nairouz Ben Hadj Slema
