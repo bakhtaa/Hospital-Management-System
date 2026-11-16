@@ -1,4 +1,4 @@
-#  ZeeCare Medical Institute - Hospital Management System
+
 # Hospital Management System
 
 ## 1. Présentation du projet
